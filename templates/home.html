@@ -1,0 +1,61 @@
+{% load static%}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{%static 'index.css'%}" />
+  <title>Home Page</title>
+</head>
+
+<body>
+  <header>
+    <ul class="navbar">
+      <a href = {%url 'home'%}>
+        <li>
+          <h1>Music Platform</h1>
+        </li>
+      </a>
+      {%if user.is_authenticated%}
+      <li class="welcome">Welcome {{user.username}}</li>
+      <li class="logout">
+        <a href={%url 'logout' %}>
+          <button>Log out</button>
+        </a>
+      </li>
+
+      {%else%}
+      <li class="login">
+        <a href={%url 'login' %}>
+          <button>Log in</button>
+        </a>
+      </li>
+      <li class="signup">
+        <a href={%url 'signup' %}>
+          <button>Sign up</button>
+        </a>
+      </li>
+      {%endif%}
+    </ul>
+  </header>
+  <section>
+    <h1> Welcome to Music Platform </h1>
+    <a href={% url 'artist_page' %}><button> View Artists</button> </a>
+    {%if user.is_authenticated%}
+    <a href={% url 'create_artist' %}>
+      <button>
+        Create Artist
+      </button>
+    </a>
+    <a href={% url 'create_album' %}>
+      <button>
+        Create Album
+      </button>
+    </a>
+    {%endif%}
+  </section>
+</body>
+
+</html>

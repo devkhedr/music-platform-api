@@ -1,0 +1,88 @@
+{% load static%}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{%static 'index.css'%}" />
+  <title>Artists Page</title>
+</head>
+
+<body>
+  <header>
+    <ul class="navbar">
+      <a href = {%url 'home'%}>
+        <li>
+          <h1>Music Platform</h1>
+        </li>
+      </a>
+      {%if user.is_authenticated%}
+      <li class="welcome">Welcome {{user.username}}</li>
+      <li class="logout">
+        <a href={%url 'logout' %}>
+          <button>Log out</button>
+        </a>
+      </li>
+
+      {%else%}
+      <li class="login">
+        <a href={%url 'login' %}>
+          <button>Log in</button>
+        </a>
+      </li>
+      <li class="signup">
+        <a href={%url 'signup' %}>
+          <button>Sign up</button>
+        </a>
+      </li>
+      {%endif%}
+    </ul>
+  </header>
+  <section>
+    {%if user.is_authenticated%}
+    <a href={% url 'create_artist' %}>
+      <button>
+        Create Artist
+      </button>
+    </a>
+    <a href={% url 'create_album' %}>
+      <button>
+        Create Album
+      </button>
+    </a>
+    {%endif%}
+  </section>
+  {% for artist in artists_list%}
+  <div class="artist">
+    <b>
+      <h2>{{artist.stage_name}}</h2>
+    </b>
+    <ul>
+      <li><b>Id: </b> {{ artist.id }}</li>
+      <li><b>Stage Name: </b> {{ artist.stage_name }}</li>
+      <li><b>Social Link: </b>{{ artist.social_link }}</li>
+      <li>
+        <b>Albums: </b>
+        <div class="albums_list">
+          {% for album in artist.album_set.all%}
+          <div class="single_album">
+            <h4>{{album.album_name}}</h4>
+            <ul>
+              <li><b>Creation Date: </b> {{ album.created_at }}</li>
+              <li><b>Released Date: </b> {{ album.released_at }}</li>
+              <li><b>Cost: </b>{{ album.price }}</li>
+            </ul>
+          </div>
+          {%endfor %}
+        </div>
+      </li>
+    </ul>
+  </div>
+  {%empty%}
+  <h1> There are no artists in the list </h1>
+  {% endfor %}
+</body>
+
+</html>
