@@ -2,7 +2,7 @@
 from email.policy import default
 from datetime import datetime
 from django.db import models
-from artists.models import artist
+from artists.models import Artist
 from model_utils.fields import AutoCreatedField
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import FileExtensionValidator
@@ -16,8 +16,8 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
-class album(TimeStampedModel):
-    album_artist = models.ForeignKey(artist, on_delete=models.CASCADE)
+class Album(TimeStampedModel):
+    album_artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     album_name = models.CharField(max_length=100, default="New Album")
     released_at = models.DateTimeField(blank=False, null=False)
     price = models.DecimalField(
@@ -31,9 +31,9 @@ class album(TimeStampedModel):
         return self.album_name
 
 
-class song(models.Model):
+class Song(models.Model):
     name = models.CharField(max_length=100, blank=True, null=False)
-    album = models.ForeignKey(album, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/', blank=False)
     thumb = ProcessedImageField(upload_to='thumbs/', format='JPEG')
     audio = models.FileField(

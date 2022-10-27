@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Count, Model
 
 
-class artist(models.Model):
+class Artist(models.Model):
     stage_name = models.CharField(
         max_length=100, unique=True, blank=False, null=False)
     social_link = models.URLField(max_length=200, blank=True, null=False)
