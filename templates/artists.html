@@ -11,35 +11,6 @@
 </head>
 
 <body>
-  <header>
-    <ul class="navbar">
-      <a href = {%url 'home'%}>
-        <li>
-          <h1>Music Platform</h1>
-        </li>
-      </a>
-      {%if user.is_authenticated%}
-      <li class="welcome">Welcome {{user.username}}</li>
-      <li class="logout">
-        <a href={%url 'logout' %}>
-          <button>Log out</button>
-        </a>
-      </li>
-
-      {%else%}
-      <li class="login">
-        <a href={%url 'login' %}>
-          <button>Log in</button>
-        </a>
-      </li>
-      <li class="signup">
-        <a href={%url 'signup' %}>
-          <button>Sign up</button>
-        </a>
-      </li>
-      {%endif%}
-    </ul>
-  </header>
   <section>
     {%if user.is_authenticated%}
     <a href={% url 'create_artist' %}>
