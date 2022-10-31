@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'artists',
+    'albums',
     'imagekit',
     'rest_framework',
     'knox',
@@ -124,6 +126,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 # Base url to serve media files
 MEDIA_URL = '/media/'
 
@@ -138,5 +144,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEAFULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication')
 }
+
 
 AUTH_USER_MODEL = 'users.CustomUser'
