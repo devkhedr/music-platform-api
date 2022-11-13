@@ -17,8 +17,8 @@ class InlineSong(admin.StackedInline):
     min_num = 1
     
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ['album_name', 'album_artist', 'songs_count', 'is_approved']
-    fields = ['album_name', 'album_artist', 'created_at', 'released_at', 'price', 'is_approved']
+    list_display = ['name', 'artist', 'songs_count', 'is_approved']
+    fields = ['name', 'artist', 'created_at', 'release_date', 'cost', 'is_approved']
     readonly_fields = ["created_at"]
     form = CustomizeAlbumForm
     inlines = [InlineSong]

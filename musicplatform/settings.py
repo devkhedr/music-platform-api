@@ -10,19 +10,30 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-import os
 from pathlib import Path
-from tracemalloc import StatisticDiff
+from celery.schedules import crontab
+import os, environ
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, True)
+)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-w84_w0ziza+(y_=jfcvx=$$f3(^nf8_#g9=n09x#e(dho$u__@'
+
+SECRET_KEY='django-insecure-w84_w0ziza+(y_=jfcvx=$$f3(^nf8_#g9=n09x#e(dho$u__@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,6 +57,9 @@ INSTALLED_APPS = [
     'knox',
     'authentication',
     'users',
+    'django_filters',
+    'django_celery_results',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -120,6 +134,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'users.CustomUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -136,14 +151,52 @@ MEDIA_URL = '/media/'
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+TEST_RUNNER = 'my_project.runner.PytestTestRunner'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    'DEAFULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication')
+    'DEAFULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication'),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
 
 
-AUTH_USER_MODEL = 'users.CustomUser'
+EMAIL_PORT=587
+EMAIL_HOST_USER = env("email")
+EMAIL_HOST_PASSWORD = env("password")
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_USE_TLS=True
+
+
+CELERY_CONF_BROKER_URL = env("server")
+CELERY_CONF_TASK_TRACK_STARTED = True
+CELERY_CONF_TASK_TIME_LIMIT = 30 * 60
+CELERY_CONF_RESULT_BACKEND = 'django-db'
+CELERY_CONF_CACHE_BACKEND = 'django-cache'
+CELERY_CONF_TIMEZONE = 'Africa/Cairo'
+CELERY_CACHE_BACKEND = 'default'
+CELERY_CONF_ACCEPT_CONTENT = ['application/json']
+
+# django setting.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
+}
+
+# Scheduler Settings
+CELERY_CONF_BEAT_SCHEDULE = {
+    'send-email-every-day-at-midnight': {
+        'task': 'albums.tasks.send_mail_every_day_task',
+        'schedule': crontab(hour=0, minute=0),
+    }
+}

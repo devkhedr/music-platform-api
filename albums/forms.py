@@ -6,7 +6,7 @@ from .models import Album
 class NewAlbumForm(forms.ModelForm):
     class Meta:
         model = Album
-        fields = ['album_name', 'album_artist', 'released_at', 'price', 'is_approved']
+        fields = ['name', 'artist', 'release_date', 'cost', 'is_approved']
         widgets = {
-            'released_at':forms.TextInput(attrs={'type':'datetime-local'}),
+            'release_date':forms.TextInput(attrs={'type':'datetime-local'}),
         }

@@ -17,6 +17,14 @@ djangorestframework = "^3.14.0"
 django-rest-framework = "^0.1.0"
 django-extensions = "^3.2.1"
 django-rest-knox = "^4.2.0"
+pytest-django = "^4.5.2"
+django-api-client = "^0.32.1"
+django-passwords = "^0.3.12"
+django-filter = "^22.1"
+celery = "^5.2.7"
+redis = "^4.3.4"
+django-celery-results = "^2.4.0"
+django-celery-beat = "^2.4.0"
 
 
 

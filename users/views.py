@@ -4,7 +4,7 @@ from .serializers import UserSerializer
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 
 
 User = get_user_model()
@@ -12,7 +12,7 @@ User = get_user_model()
 
 class UserView(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = {permissions.IsAuthenticatedOrReadOnly}
 
     def get(self, request, *args, **kwargs):
         User = get_user_model()

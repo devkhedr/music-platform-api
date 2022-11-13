@@ -17,10 +17,10 @@ class TimeStampedModel(models.Model):
 
 
 class Album(TimeStampedModel):
-    album_artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
-    album_name = models.CharField(max_length=100, default="New Album")
-    released_at = models.DateTimeField(blank=False, null=False)
-    price = models.DecimalField(
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default="New Album")
+    release_date = models.DateTimeField(blank=False, null=False)
+    cost = models.DecimalField(
         max_digits=6, decimal_places=2, blank=False, null=False)
     is_approved = models.BooleanField(default=False, blank=False)
 
@@ -28,7 +28,7 @@ class Album(TimeStampedModel):
         return self.song_set.count()
 
     def __str__(self):
-        return self.album_name
+        return self.name
 
 
 class Song(models.Model):
