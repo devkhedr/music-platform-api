@@ -1,41 +1,56 @@
-from django.contrib.auth import login
-from rest_framework import generics, status, permissions
+from knox.auth import AuthToken
+from rest_framework import status
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
-from knox.models import AuthToken
-from knox.views import LoginView
-from .serializers import RegistrationSerializer
-from users.serializers import UserSerializer
-
-class RegisterUserView(generics.GenericAPIView):
-    serializer_class = RegistrationSerializer
-
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-
-        return Response({
-                    "token": AuthToken.objects.create(user)[1],
-                    "user": UserSerializer(user, context=self.get_serializer_context()).data
-                }, status=status.HTTP_201_CREATED)
+from users.models import CustomUser as User
+from .serializers import UserModelSerializer, UserRegiserSerializer
+from .permissions import IsNotAuthenticated
+# Create your views here.
 
 
-class LoginUserView(LoginView):
-    permission_classes = {permissions.AllowAny}
+class LoginView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = AuthTokenSerializer
+    permission_classes = (IsNotAuthenticated,)
 
-    def post(self, request):
+    def create(self, request, *args, **kwargs):
         serializer = AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        login(request, user)
-
+        _, token = AuthToken.objects.create(user)
         return Response({
-            "token": AuthToken.objects.create(user)[1],
+            "token": token,
             "user": {
-                "id": user.pk,
+                "id": user.id,
                 "username": user.username,
                 "email": user.email,
-                "bio": user.bio,
+                "bio": user.bio
             }
-        }, status=status.HTTP_200_OK)
+        },  status=status.HTTP_201_CREATED)
+
+
+class RegisterView(CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRegiserSerializer
+    permission_classes = (IsNotAuthenticated,)
+
+    def create(self, request, *args, **kwargs):
+        serializer = UserRegiserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        model_serializer = UserModelSerializer(data=serializer.data)
+        model_serializer.is_valid(raise_exception=True)
+        user = User.objects.create_user(
+            username=serializer.validated_data['username'], email=serializer.validated_data['email'], password=serializer.validated_data['password'])
+        _, token = AuthToken.objects.create(user)
+
+        return Response({
+            "token": token,
+            "user": {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "bio": user.bio
+            }
+        },  status=status.HTTP_201_CREATED)
