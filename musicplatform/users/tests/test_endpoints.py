@@ -1,4 +1,4 @@
-from conftest import auth_client
+from mmusicplatform.conftest import auth_client
 import pytest
 from rest_framework import status
 from rest_framework.test import APIClient
