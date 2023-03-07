@@ -14,10 +14,10 @@ git clone https://github.com/MohamedKhedr07/music-platform.git
    - If you run the app for the first time, run the following 2 commands
         - ```Bash
             pip install -r requirements.txt
-            python musicplatform/manage.py migrate --run-syncdb
+            python manage.py migrate --run-syncdb
             ```
         then
         - ```Bash
-            python musicplatform/manage.py runserver
+            python manage.py runserver
             ```
         to start the API server.
