@@ -25,6 +25,8 @@ celery = "^5.2.7"
 redis = "^4.3.4"
 django-celery-results = "^2.4.0"
 django-celery-beat = "^2.4.0"
+drf-yasg = "^1.21.5"
+rest-framework-swagger-zl = "^0.0.4"
 
 
 

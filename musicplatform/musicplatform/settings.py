@@ -12,16 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from celery.schedules import crontab
-import os, environ
+import os
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, True)
-)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -60,6 +54,7 @@ INSTALLED_APPS = [
     'django_filters',
     'django_celery_results',
     'django_celery_beat',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -169,14 +164,14 @@ REST_FRAMEWORK = {
 
 
 EMAIL_PORT=587
-EMAIL_HOST_USER = env("email")
-EMAIL_HOST_PASSWORD = env("password")
+EMAIL_HOST_USER = "musicapp.khedr@gmail.com"
+EMAIL_HOST_PASSWORD = "fqucfeliefrxxnfl"
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='smtp.gmail.com'
 EMAIL_USE_TLS=True
 
 
-CELERY_CONF_BROKER_URL = env("server")
+CELERY_CONF_BROKER_URL = ""
 CELERY_CONF_TASK_TRACK_STARTED = True
 CELERY_CONF_TASK_TIME_LIMIT = 30 * 60
 CELERY_CONF_RESULT_BACKEND = 'django-db'

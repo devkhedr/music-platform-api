@@ -13,19 +13,7 @@
 <body>
   <section>
     <h1> Welcome to Music Platform </h1>
-    <a href={% url 'artist_page' %}><button> View Artists</button> </a>
-    {%if user.is_authenticated%}
-    <a href={% url 'create_artist' %}>
-      <button>
-        Create Artist
-      </button>
-    </a>
-    <a href={% url 'create_album' %}>
-      <button>
-        Create Album
-      </button>
-    </a>
-    {%endif%}
+    <a href={% url 'schema_swagger_ui' %}><button> API docs</button> </a>
   </section>
 </body>
 
