@@ -1,6 +1,5 @@
-# Music Platform
+# Welcome to Music Platform 
 Backend rest API server that provides and handle albums, artists, songs and relations between them with authentication and permissions and testing it.
-
 # Installation and setup
 
 #### Clone the project
