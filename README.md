@@ -7,7 +7,7 @@ Backend rest API server that provides and handle albums, artists, songs and rela
 
 
 ```Bash
-git clone https://github.com/MohamedKhedr07/blind-guide.git
+git clone https://github.com/MohamedKhedr07/music-platform.git
 ```
 #### Run the API server
 
