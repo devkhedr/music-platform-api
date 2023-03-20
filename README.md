@@ -6,7 +6,7 @@ Backend rest API server that provides and handle albums, artists, songs and rela
 
 
 ```Bash
-git clone https://github.com/MohamedKhedr07/music-platform.git
+git clone https://github.com/devkhedr/music-platform.git
 ```
 #### Run the API server
    - create your virtual environment, and activate it.
